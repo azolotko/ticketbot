@@ -1,0 +1,22 @@
+[Unit]
+Description=ticketbot
+Requires=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=/srv/ticketbot
+EnvironmentFile=/etc/default/ticketbot
+ExecStart=/srv/ticketbot/bin/ticketbot -no-version-check
+ExecReload=/bin/kill -HUP $MAINPID
+Restart=always
+RestartSec=60
+SuccessExitStatus=
+User=ticketbot
+ExecStartPre=/bin/mkdir -p /run/ticketbot
+ExecStartPre=/bin/chown ticketbot:ticketbot /run/ticketbot
+ExecStartPre=/bin/chmod 755 /run/ticketbot
+PermissionsStartOnly=true
+LimitNOFILE=50000
+
+[Install]
+WantedBy=multi-user.target
